@@ -1,0 +1,12 @@
+for client side
+
+npm install react-router-dom
+npm install socket.io-client
+npm start 
+
+for server side
+npm add express cors nodemon socket.io
+npm start 
+
+
+download this depedencies 

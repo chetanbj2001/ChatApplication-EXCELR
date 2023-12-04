@@ -1,5 +1,0 @@
-for client side
-
-npm install react-router-dom
-npm install socket.io-client
-npm start 

@@ -1,0 +1,27 @@
+.buttonofnav {
+  margin-left: 60em;
+}
+
+.icons-link1 {
+  display: grid;
+  text-align: justify;
+  margin-left: 2em;
+}
+
+.icons-link1:hover {
+  font-weight: 600;
+  color: cadetblue;
+  transition: 400ms;
+}
+
+.icons-link2 {
+  display: grid;
+  text-align: justify;
+  margin-left: 2em;
+}
+
+.icons-link2:hover {
+  font-weight: 600;
+  color: cadetblue;
+  transition: 400ms;
+}/*# sourceMappingURL=navbar.css.map */

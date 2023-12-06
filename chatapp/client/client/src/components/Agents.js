@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-const socket = io('http://localhost:3001');
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import './css/AgentChat/agent.css'
 
+const socket = io('http://localhost:3001');
+// const baseUrl = 'http://localhost:8080/api/v1/names';
 const Agents = () => {
   const [agentName, setAgentName] = useState('');
   const [showFeatures, setShowFeatures] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
 
-  const handleAgentJoin = () => {
-    socket.emit('agent_joined', agentName);
-    setShowFeatures(true);
-  };
+
+  
+
+
+
+
+
+
+
+
+
+
+  
 
   const handleDisconnect = () => {
     socket.emit('agent_disconnect', agentName);
@@ -32,41 +45,80 @@ const Agents = () => {
     console.log(`received message: ${data.message}`);
   };
 
+
+
+
+
+
+  
+
+
   useEffect(() => {
+
+    let myCookieValue = Cookies.get('agent');
+    console.log(myCookieValue+ ' is the cookie value');
+    let setagentNamefromCookies = myCookieValue;
+    setAgentName(setagentNamefromCookies);
+
+
     socket.on('recieve', handleReceive);
 
     return () => {
       socket.off('recieve', handleReceive);
     };
-  }, []);
+  }, [agentName]);
+
+  const handleAgentJoin = () => {
+    
+    console.log(agentName + 'is agentNmae')
+    socket.emit('agent_joined', agentName);
+    setShowFeatures(true);
+  };
+
+
+
 
   return (
     <div>
       <h1> Agents </h1>
-      <label>
-        agent name :
-        <input value={agentName} onChange={(e) => setAgentName(e.target.value)}></input>
+      <label className='name-label'>
+        {agentName}
+        
       </label>
-
-      <button onClick={handleAgentJoin}>Connect</button>
+      <br/><br/>
+      <button className='connect-btn btn btn-dark' onClick={handleAgentJoin}>Connect</button>
 
       {showFeatures && (
         <div>
-          <p> connected as agent :</p>
-          <label>
-            Message Box:
-            <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-          </label>
-          <button onClick={sendMessage}>send</button>
+          <p className='connected-text'> connected as agent </p>
+          <div className='message-div'>
+         
+              Message Box:&nbsp;&nbsp;
+              <input
+                type="text"
+                className='ipbox form-control'
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            
+            <button className='btn btn-dark' onClick={sendMessage}>
+              Send
+            </button>
+          </div>
           <h1> Chat: </h1>
-          <div>
+          <div className="chat-container">
             {chatMessages.map((chat, index) => (
-              <p key={index}>
+              <div
+                key={index}
+                className={`message ${
+                  chat.sender === 'you' ? 'agent-message' : 'client-message'
+                }`}
+              >
                 <strong>{chat.sender}:</strong> {chat.message}
-              </p>
+              </div>
             ))}
           </div>
-          <button onClick={handleDisconnect}>disconnect</button>
+          <button  className='disconnect-btn btn btn-danger' onClick={handleDisconnect}>disconnect</button>
         </div>
       )}
     </div>

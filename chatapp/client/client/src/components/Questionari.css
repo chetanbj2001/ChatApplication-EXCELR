@@ -1,0 +1,45 @@
+/* Questionari.css */
+
+.faq-section{
+    
+    border: 2px solid red;
+    border-radius: 5px;
+    
+    margin: auto;
+    margin-top: 50px;
+    padding-bottom: 10px;
+    width: 30%;
+}
+.faq-item {
+
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    
+    overflow: hidden;
+
+  }
+  
+  .faq-question {
+    background-color: #f5f5f5;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .togglecheck {
+    font-size: 20px;
+  }
+  
+  .faq-answer {
+    padding: 10px;
+  }
+  
+  /* Optional: Add transitions for a smoother animation effect */
+  .faq-question:hover {
+    background-color: #e0e0e0;
+    transition: background-color 0.3s ease;
+  }
+  

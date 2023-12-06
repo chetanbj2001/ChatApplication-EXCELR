@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import './css/ClientChat/client.css';
+import Cookies from 'js-cookie';
 const socket = io('http://localhost:3001');
 
 const Clients = () => {
@@ -17,12 +19,29 @@ const Clients = () => {
     setShowFeatures(false);
   };
 
+  const handleJoin = () => {
+    console.log('in handle join  array of waiting clients: ' + waitingClients);
+    console.log(clientName);
+    socket.emit('client_joined', clientName, agentToConnect);
+    setShowFeatures(true);
+  };
+
+
   useEffect(() => {
     socket.on('waiting_clients', (waitingClients) => {
       if (waitingClients.includes(clientName)) {
         setShowFeatures(false);
       }
     });
+
+    let agentCookie = Cookies.get('agent');
+    let myCookieValue = Cookies.get('user');
+    console.log(myCookieValue+ ' is the cookie value');
+    let setclientNamefromCookies = myCookieValue;
+    setClientName(setclientNamefromCookies);
+    let setAgentNameFromCookies = agentCookie;
+    setAgentToConnect(setAgentNameFromCookies);
+
 
     socket.on('waiting_roommsg', (grabbedClientName, grabbedAgentName) => {
       console.log('now client ' + grabbedClientName + ' can join  ' + grabbedAgentName);
@@ -34,7 +53,7 @@ const Clients = () => {
     return () => {
       socket.off('recieve', handleReceive);
     };
-  }, []);
+  });
 
   const handleReceive = (data) => {
     console.log(data);
@@ -43,13 +62,7 @@ const Clients = () => {
     console.log(`received message: ${data.message}`);
   };
 
-  const handleJoin = () => {
-    console.log('in handle join  array of waiting clients: ' + waitingClients);
-    console.log(clientName);
-    socket.emit('client_joined', clientName, agentToConnect);
-    setShowFeatures(true);
-  };
-
+  
   const sendMessage = () => {
     const newMessage = { sender: 'you', message: inputValue };
     socket.emit('message_from_client', { inputValue }, agentToConnect, clientName);
@@ -60,37 +73,42 @@ const Clients = () => {
 
   return (
     <div>
-      <label>
-        Name:
-        <input value={clientName} onChange={(e) => setClientName(e.target.value)}></input>
+
+      <h1> Clients</h1>
+      <label className='name-label'>
+        {clientName}
+        
       </label>
 
-      <label>
-        Agent Name:
-        <input value={agentToConnect} onChange={(e) => setAgentToConnect(e.target.value)}></input>
-      </label>
 
-      <button onClick={handleJoin}>Connect</button>
+      <button className='connect-btn btn btn-dark' onClick={handleJoin}>Connect</button>
 
       {showFeatures && (
-        <div>
-          <br />
-          <br />
-          <label>
-            Message Box:
-            <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-          </label>
-          <button onClick={sendMessage}>Send</button>
-          <h1> Chat: </h1>
-          <div>
-            {chatMessages.map((message, index) => (
-              <p key={index}>
-                <strong>{message.sender}:</strong> {message.message}
-              </p>
-            ))}
+        <div className='show-features'> 
+          
+         <div className='msg-container'>
+            Message:&nbsp;&nbsp;&nbsp;
+            <input type="text" className='form-control' value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+         
+          <button className='send-btn btn btn-dark' onClick={sendMessage}>Send</button>
           </div>
-          <button onClick={handleDisconnect}>Disconnect</button>
-        </div>
+          
+          <h1> Chat: </h1>
+          <div className="chat-container">
+                {chatMessages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`message ${
+                      message.sender === 'you' ? 'agent-message' : 'client-message'
+                    }`}
+                  >
+                    <strong>{message.sender}:</strong> {message.message}
+                  </div>
+                ))}
+              </div>
+
+          <button className='disconnect-btn btn btn-danger' onClick={handleDisconnect}>Disconnect</button>
+       </div>
       )}
     </div>
   );

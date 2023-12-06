@@ -1,7 +1,6 @@
 # ChatApplication-EXCELR
 # Chat App
-
-This is a simple chat application built with React and Socket.IO for real-time communication between clients and agents.
+This is a versatile chat application built with React, React Router DOM, Socket.IO, and Express for real-time communication between clients and agents. The application supports the concept of waiting rooms, allowing multiple clients to connect simultaneously. If a client disconnects, another client can seamlessly join the chat room.
 
 ## Prerequisites
 

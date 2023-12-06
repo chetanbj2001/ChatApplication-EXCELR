@@ -1,0 +1,63 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 8px;
+  margin: 4px;
+  border-radius: 4px;
+  max-width: 70%; /* Adjust as needed */
+}
+
+.agent-message {
+  background-color: #cce5ff; /* Light blue for agent messages */
+  align-self: flex-end;
+  margin-right: 2em;
+}
+
+.client-message {
+  background-color: #e6ffe6; /* Light green for client messages */
+  align-self: flex-start;
+  margin-left: 2em;
+}
+
+.message-div {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 50px;
+  left: 40%;
+}
+
+.message-div label {
+  margin-right: 10px; /* Adjust the spacing between label and input */
+}
+
+.message-div input {
+  flex: 1; /* Take up remaining space */
+  margin-right: 10px; /* Adjust the spacing between input and button */
+}
+
+.message-div button {
+  width: 80px; /* Adjust the button width as needed */
+}
+
+.disconnect-btn {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}
+
+.name-label {
+  position: absolute;
+  top: 20px;
+  right: 350px;
+  font-weight: 700;
+}
+
+.connect-btn {
+  position: absolute;
+  top: 20px;
+  right: 180px;
+}/*# sourceMappingURL=agent.css.map */

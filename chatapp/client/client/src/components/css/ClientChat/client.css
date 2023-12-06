@@ -1,0 +1,39 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 8px;
+  margin: 4px;
+  border-radius: 4px;
+  max-width: 70%; /* Adjust as needed */
+}
+
+.agent-message {
+  background-color: #cce5ff; /* Light blue for agent messages */
+  align-self: flex-end;
+  margin-right: 2em;
+}
+
+.client-message {
+  background-color: #e6ffe6; /* Light green for client messages */
+  align-self: flex-start;
+  margin-left: 2em;
+}
+
+.msg-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 50px;
+  left: 40%;
+}
+
+.send-btn {
+  margin-left: 10px;
+}
+
+.show-features {
+  margin-top: 4em;
+}/*# sourceMappingURL=client.css.map */

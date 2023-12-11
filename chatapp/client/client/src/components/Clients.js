@@ -9,42 +9,52 @@ const Clients = () => {
   const [showFeatures, setShowFeatures] = useState(false);
   const [agentToConnect, setAgentToConnect] = useState('');
   const [waitingClients, setWaitingClients] = useState([]);
-
+  const [inWaitingQueue, setInWaitingQueue] = useState(false);
+  const [joinMessage, setJoinMessage] = useState('');
+  const [joinMsgShow , setJoinMsgShow] = useState(false);
   // Messaging
   const [inputValue, setInputValue] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
 
   const handleDisconnect = () => {
     socket.emit('client_disconnected', clientName, agentToConnect);
+    setJoinMsgShow(true);
     setShowFeatures(false);
   };
 
   const handleJoin = () => {
-    console.log('in handle join  array of waiting clients: ' + waitingClients);
+   
+   
+   
+    console.log(waitingClients)
     console.log(clientName);
     socket.emit('client_joined', clientName, agentToConnect);
     setShowFeatures(true);
   };
+  
 
 
   useEffect(() => {
     socket.on('waiting_clients', (waitingClients) => {
       if (waitingClients.includes(clientName)) {
         setShowFeatures(false);
+        setInWaitingQueue(true);
+        setWaitingClients(waitingClients);
+      }
+      else{
+        setInWaitingQueue(false);
       }
     });
-
     let agentCookie = Cookies.get('agent');
+    let setAgentNameFromCookies = agentCookie;
+    setAgentToConnect(setAgentNameFromCookies);
     let myCookieValue = Cookies.get('user');
     console.log(myCookieValue+ ' is the cookie value');
     let setclientNamefromCookies = myCookieValue;
+    console.log("Waiting clients queue"+ waitingClients.join(', '));
     setClientName(setclientNamefromCookies);
-    let setAgentNameFromCookies = agentCookie;
-    setAgentToConnect(setAgentNameFromCookies);
-
-
     socket.on('waiting_roommsg', (grabbedClientName, grabbedAgentName) => {
-      console.log('now client ' + grabbedClientName + ' can join  ' + grabbedAgentName);
+      setJoinMessage('now client ' + grabbedClientName + ' can join  ' + grabbedAgentName);
     });
 
     // Receive message
@@ -74,7 +84,7 @@ const Clients = () => {
   return (
     <div>
 
-      <h1> Clients</h1>
+      <h1> How can we help you? </h1>
       <label className='name-label'>
         {clientName}
         
@@ -82,10 +92,22 @@ const Clients = () => {
 
 
       <button className='connect-btn btn btn-dark' onClick={handleJoin}>Connect</button>
-
+      {inWaitingQueue && (
+        
+            <div>
+              <p>You are in the waiting queue. Be calm you will be redirected in few minuits.</p>
+              {joinMsgShow && 
+              {joinMessage}
+              }
+             
+            </div>
+            
+          )}
       {showFeatures && (
         <div className='show-features'> 
+        <p>Connected to <strong> {agentToConnect}</strong> </p>
           
+
          <div className='msg-container'>
             Message:&nbsp;&nbsp;&nbsp;
             <input type="text" className='form-control' value={inputValue} onChange={(e) => setInputValue(e.target.value)} />

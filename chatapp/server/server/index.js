@@ -86,7 +86,7 @@ socket.on('client_joined', (clientNameGrabbed , agentNameGrabbed)=>{
         console.log(`client ${clientNameToJoin} will join the agent ${agentName}`);
         console.log('before splice :'+  freeAgent);
         freeAgent.splice(freeAgent.indexOf(agentToJoin),1);
-     
+        socket.to(agentToJoin).emit('client_connected_mgs', clientNameToJoin);
         //array for send specific message to a specific agent 
         let agentClientPair  = {
             agentName: agentToJoin,
@@ -108,7 +108,7 @@ socket.on('client_joined', (clientNameGrabbed , agentNameGrabbed)=>{
 
         else
         {
-            waitingClients.push(clientNameToJoin);
+            waitingClients.push(clientNameGrabbed);
             //waiting clients room
             socket.join('waiting_room');
             
@@ -135,7 +135,7 @@ socket.on('client_joined', (clientNameGrabbed , agentNameGrabbed)=>{
     freeAgent.push(agentName);
     let canJoinClient = waitingClients[0]; //assigining a vriable to whom to send can join message
     console.log('can join client : '+ canJoinClient);
-    
+    socket.to(agentName).emit('client_disconnected_msg',clientName,canJoinClient);
     //messaging to waiting clients 
     socket.to('waiting_room').emit('waiting_roommsg', canJoinClient, agentName);
 
